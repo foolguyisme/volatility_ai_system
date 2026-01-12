@@ -1,0 +1,46 @@
+inputs:
+  raw_daily_parquet: "data/raw/ohlcv_1d.parquet"
+  features_parquet: "data/features/features.parquet"
+
+targets:
+  horizons: [1, 7]
+
+cv:
+  n_folds: 5
+  valid_size: 0.15
+  expanding: true
+
+model:
+  name: "lgbm"
+  params:
+    # --- GPU ---
+    device: gpu
+    gpu_platform_id: 0
+    gpu_device_id: 0
+
+    # --- GPU 建議 ---
+    max_bin: 255
+    min_data_in_bin: 3
+
+    # --- splits / warnings ---
+    min_split_gain: 0.0
+    verbosity: -1
+    random_state: 42
+
+    # --- Optuna best (next_1d_return, 50 trials) ---
+    learning_rate: 0.07860548569204491
+    num_leaves: 17
+    min_child_samples: 21
+    subsample: 0.6038855939114581
+    colsample_bytree: 0.8056891692692755
+    reg_lambda: 0.14515619679118616
+    reg_alpha: 0.9912304431814063
+    n_estimators: 3034
+
+training:
+  targets: ["next_1d_return", "next_7d_return"]
+
+output:
+  models_dir: "artifacts/models"
+  oof_dir: "artifacts/oof"
+  reports_dir: "artifacts/reports"

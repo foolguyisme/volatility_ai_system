@@ -1,0 +1,21 @@
+inputs:
+  daily_parquet: "data/raw/ohlcv_1d.parquet"
+  hourly_parquet: "data/raw/ohlcv_1h.parquet"
+
+outputs:
+  features_parquet: "data/features/features.parquet"
+
+daily:
+  timeframe: "1d"
+  windows: [1, 7, 15]
+  rsi_windows: [14]
+  add_calendar: true
+
+hourly:
+  timeframe: "1h"
+  windows: [1, 24, 168, 360]
+  rsi_windows: [14]
+  add_calendar: true
+
+merge:
+  agg_hours: [24, 168, 360]

@@ -1,0 +1,11 @@
+{
+  "target": "next_1d_return",
+  "rmse": 0.027485274641472716,
+  "n_rows_total": 6270,
+  "n_train": 5016,
+  "n_valid": 1254,
+  "feature_cols": 124,
+  "model_path": "artifacts/models\\lgbm_next_1d_return_20260108_111632.txt",
+  "oof_path": "artifacts/oof\\oof_next_1d_return_20260108_111632.parquet",
+  "run_id": "20260108_111632"
+}

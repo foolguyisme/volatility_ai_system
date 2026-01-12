@@ -1,0 +1,20 @@
+{
+  "target": "next_1d_return",
+  "cv_n_folds_requested": 5,
+  "cv_valid_size": 0.15,
+  "cv_expanding": true,
+  "n_rows_used": 6270,
+  "n_features": 124,
+  "fold_rmses": [
+    0.033428442814343436,
+    0.024734289376297038,
+    0.022787788574364747,
+    0.027057190283050345,
+    0.027236671542363783
+  ],
+  "rmse_mean": 0.02704887651808387,
+  "rmse_std": 0.0035846446495918284,
+  "oof_path": "artifacts/oof\\oof_cv_next_1d_return_20260109_083633.parquet",
+  "model_path": "artifacts/models\\lgbm_cv_next_1d_return_20260109_083633.txt",
+  "run_id": "20260109_083633"
+}

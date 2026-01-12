@@ -1,0 +1,90 @@
+1) 專案工程化骨架完成
+專案
+
+src/：真正的功能模組（datasource / features / …）
+
+scripts/：執行入口（只負責呼叫 src）
+
+configs/：所有參數設定（用 YAML 控制）
+
+data/：資料輸入與產出（raw/features）
+
+artifacts/：未來放模型與報告（現在還沒用到）
+
+並且讓 scripts 可以用 python -m scripts.xxx 方式執行（scripts/__init__.py、src/__init__.py）。
+
+2) 「資料來源」（DataSource）：用 yfinance 抓 OHLCV
+
+完成 scripts/01_fetch_data 這條流程：
+
+從 configs/datasource_tradingview.yaml 讀：
+
+symbols（AAPL/MSFT/NVDA/AMD/SPY…）
+
+期間：日K 5y、小時K 730d（yfinance 的限制）
+
+呼叫 src/datasources/tradingview_ohlcv.py 去抓資料
+
+把資料存成 parquet
+
+✅ 你已成功產出：
+
+data/raw/ohlcv_1d.parquet（日K）
+
+data/raw/ohlcv_1h.parquet（小時K）
+
+而且你抓到的數量是：
+
+daily rows=6275
+
+hourly rows=25390
+
+3) 我們做了「特徵工程」（Feature Engineering）
+
+你完成了 scripts/03_build_features 這條流程：
+
+3.1 日K特徵（1d）
+
+對每一檔股票、每一天，計算：
+
+log return（lr）
+
+lr 的 rolling mean/std（窗口 1、7、15）
+
+realized volatility（sqrt(sum(lr^2))）
+
+momentum（w 天報酬）
+
+high-low range（窗口內高低差/close）
+
+volume rolling mean/std
+
+ATR（True Range 的 rolling mean）
+
+RSI（預設 14）
+
+日曆特徵（dow/month/hour）
+
+這些都由 configs/features.yaml 的 daily.windows: [1,7,15] 控制。
+
+3.2 小時K特徵（1h）
+
+同樣方法計算小時級的 rolling 特徵：
+
+窗口 [1,24,168,360] 小時（對應 1 小時、1 天、7 天、約 15 天）
+
+3.3 把「小時特徵」聚合回「日」層級
+
+因為你的最終特徵表是一筆 =「某檔股票某一天」，所以你把 1h 特徵做聚合後 join 回日K特徵：
+
+每天取「最後一根小時K」作為日切點
+
+對過去 N 小時（24/168/360）做 rolling mean/std
+
+merge 回 daily features
+
+✅ 最終成功產出：
+
+data/features/features.parquet
+
+結果是：rows=6275 cols=126 1/8號

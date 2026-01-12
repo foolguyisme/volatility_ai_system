@@ -1,0 +1,17 @@
+provider: yfinance
+market: us
+symbols: [AAPL, MSFT, NVDA, AMD, SPY]
+
+timeframes: ["1d", "1h"]
+
+lookback:
+  1d: "5y"
+  1h: "730d"
+
+output:
+  raw_dir: "data/raw"
+  cache_dir: "data/cache"
+  daily_path: "data/raw/ohlcv_1d.parquet"
+  hourly_path: "data/raw/ohlcv_1h.parquet"
+
+auto_adjust: true
