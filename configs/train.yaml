@@ -7,9 +7,7 @@ targets:
 
 cv:
   n_folds: 5
-  # 每折 valid 占整體資料比例（近似），或你也可以用固定天數，先用比例最簡單
   valid_size: 0.15
-  # 每折 train 往前擴張（expanding window）
   expanding: true
 
 model:

@@ -13,31 +13,32 @@ cv:
 model:
   name: "lgbm"
   params:
-    # --- GPU ---
+    # GPU
     device: gpu
     gpu_platform_id: 0
     gpu_device_id: 0
 
+    # GPU 建議
     max_bin: 255
     min_data_in_bin: 3
 
-    #  splits/warnings 
+    # stability
     min_split_gain: 0.0
     verbosity: -1
     random_state: 42
 
-    # next_1d_return 50 trials
-    learning_rate: 0.07860548569204491
-    num_leaves: 17
-    min_child_samples: 21
-    subsample: 0.6038855939114581
-    colsample_bytree: 0.8056891692692755
-    reg_lambda: 0.14515619679118616
-    reg_alpha: 0.9912304431814063
-    n_estimators: 3034
+    # next_7d_return best
+    learning_rate: 0.03118071756109899
+    num_leaves: 47
+    min_child_samples: 8
+    subsample: 0.7165906844493942
+    colsample_bytree: 0.6592331606003983
+    reg_lambda: 0.031119790800285305
+    reg_alpha: 0.9493502707790766
+    n_estimators: 2736
 
 training:
-  targets: ["next_1d_return", "next_7d_return"]
+  targets: ["next_7d_return"]
 
 output:
   models_dir: "artifacts/models"

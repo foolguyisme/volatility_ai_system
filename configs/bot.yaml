@@ -1,0 +1,14 @@
+discord:
+  webhook_url: ${DISCORD_WEBHOOK_URL}
+  username: "Volatility Signals"
+  avatar_url: ""
+
+signals:
+  path: artifacts/signals/signals.parquet
+  topk: 20
+  min_abs_score: 0.0
+  include_columns: ["stock_id", "score"]  
+
+dedupe:
+  log_dir: artifacts/bot_logs
+  enable: true

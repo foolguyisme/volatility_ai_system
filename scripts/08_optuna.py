@@ -1,6 +1,8 @@
 import argparse
 import os
 import yaml
+import json
+from datetime import datetime
 
 from src.training.cv import WalkForwardConfig
 from src.training.optuna_cv import run_optuna_lgbm_cv
@@ -11,9 +13,19 @@ def load_yaml(path: str) -> dict:
         return yaml.safe_load(f)
 
 
+def _now_run_id() -> str:
+    return datetime.now().strftime("%Y%m%d_%H%M%S")
+
+
+def _safe_mkdir(p: str) -> None:
+    if p:
+        os.makedirs(p, exist_ok=True)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="configs/train_optuna.yaml")
+    ap.add_argument("--tag", default="optuna", help="default=optuna")
     args = ap.parse_args()
 
     cfg = load_yaml(args.config)
@@ -21,7 +33,6 @@ def main():
     raw_daily = cfg["inputs"]["raw_daily_parquet"]
     features = cfg["inputs"]["features_parquet"]
     horizons = list(cfg["targets"]["horizons"])
-
     target = cfg["training"]["target"]
 
     cv_cfg = WalkForwardConfig(
@@ -37,10 +48,11 @@ def main():
     fixed_params = cfg["model"]["fixed_params"]
 
     out = cfg["output"]
-    reports_dir = out["reports_dir"]
-    models_dir = out["models_dir"]
-    os.makedirs(reports_dir, exist_ok=True)
-    os.makedirs(models_dir, exist_ok=True)
+    reports_dir = out.get("reports_dir", "artifacts/reports")
+    models_dir = out.get("models_dir", "artifacts/models")
+    _safe_mkdir(reports_dir)
+    _safe_mkdir(models_dir)
+
 
     run_optuna_lgbm_cv(
         raw_daily_path=raw_daily,
@@ -55,6 +67,37 @@ def main():
         models_dir=models_dir,
         timeout_sec=timeout_sec,
     )
+
+    #  Fallback：找出最新的 optuna report 檔，補上 tag 與 rmse_mean 
+    import glob
+
+    patt = os.path.join(reports_dir, f"report_optuna_cv_{target}_*.json")
+    files = sorted(glob.glob(patt))
+    if not files:
+        print("[08_optuna] warning: no optuna report found to normalize:", patt)
+        return
+
+    latest = files[-1]
+    with open(latest, "r", encoding="utf-8") as f:
+        j = json.load(f)
+
+    # normalize
+    j["tag"] = args.tag or "optuna"
+    j["config_path"] = args.config
+    j.setdefault("run_type", "optuna_cv")
+    j.setdefault("run_id", _now_run_id())
+
+    # 把 best_value_rmse_mean 放到 rmse_mean（讓 compare 統一讀 rmse_mean）
+    if "rmse_mean" not in j or j.get("rmse_mean") is None:
+        if "best_value_rmse_mean" in j:
+            j["rmse_mean"] = j["best_value_rmse_mean"]
+        elif "best_value" in j:
+            j["rmse_mean"] = j["best_value"]
+
+    with open(latest, "w", encoding="utf-8") as f:
+        json.dump(j, f, ensure_ascii=False, indent=2)
+
+    print("[08_optuna] normalized report =", latest)
 
 
 if __name__ == "__main__":

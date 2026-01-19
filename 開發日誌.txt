@@ -27,7 +27,7 @@ symbols（AAPL/MSFT/NVDA/AMD/SPY…）
 
 把資料存成 parquet
 
-✅ 你已成功產出：
+
 
 data/raw/ohlcv_1d.parquet（日K）
 
@@ -83,8 +83,28 @@ RSI（預設 14）
 
 merge 回 daily features
 
-✅ 最終成功產出：
+
 
 data/features/features.parquet
 
 結果是：rows=6275 cols=126 1/8號
+
+
+目前專案狀態總結
+
+已完成part
+
+資料下載與清洗
+
+特徵工程
+
+Label 建立
+
+GPU 加速 LightGBM
+
+Walk-forward CV
+
+Baseline 與 Optuna 模型完整比較
+
+統一報告格式與自動比較
+1/13

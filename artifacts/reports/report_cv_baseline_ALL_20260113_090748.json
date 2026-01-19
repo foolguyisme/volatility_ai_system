@@ -1,0 +1,51 @@
+{
+  "run_id": "20260113_090748",
+  "results": {
+    "next_1d_return": {
+      "rmse_mean": 0.024383510192261437,
+      "rmse_std": 0.0028641413365351185,
+      "fold_rmses": [
+        0.02935295814061917,
+        0.022840500152856685,
+        0.02065720627855706,
+        0.024462964767392386,
+        0.024603921621881877
+      ],
+      "model_path": "artifacts/models\\lgbm_cv_next_1d_return_20260113_090748.txt",
+      "oof_path": "artifacts/oof\\oof_cv_next_1d_return_20260113_090748.parquet"
+    },
+    "next_7d_return": {
+      "rmse_mean": 0.07009903585599157,
+      "rmse_std": 0.00829062770583539,
+      "fold_rmses": [
+        0.08066533282562173,
+        0.0721781264533705,
+        0.05557821431509513,
+        0.0737836060337278,
+        0.0682898996521427
+      ],
+      "model_path": "artifacts/models\\lgbm_cv_next_7d_return_20260113_090748.txt",
+      "oof_path": "artifacts/oof\\oof_cv_next_7d_return_20260113_090748.parquet"
+    }
+  },
+  "tag": "baseline",
+  "config_path": "configs/train_cv.yaml",
+  "model_params_used": {
+    "device": "gpu",
+    "gpu_platform_id": 0,
+    "gpu_device_id": 0,
+    "max_bin": 255,
+    "min_data_in_bin": 3,
+    "min_split_gain": 0.0,
+    "verbosity": -1,
+    "random_state": 42,
+    "learning_rate": 0.07860548569204491,
+    "num_leaves": 17,
+    "min_child_samples": 21,
+    "subsample": 0.6038855939114581,
+    "colsample_bytree": 0.8056891692692755,
+    "reg_lambda": 0.14515619679118616,
+    "reg_alpha": 0.9912304431814063,
+    "n_estimators": 3034
+  }
+}

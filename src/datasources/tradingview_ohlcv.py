@@ -40,19 +40,15 @@ def _normalize_ohlcv(df: pd.DataFrame, symbol: str) -> pd.DataFrame:
 
     dfx = df.copy()
 
-    # ✅ MultiIndex 欄位（例如 ('Open','AAPL')）處理
     if isinstance(dfx.columns, pd.MultiIndex):
-        # 常見形式：level0 = OHLCV, level1 = Ticker
         if symbol in dfx.columns.get_level_values(-1):
             dfx = dfx.xs(symbol, axis=1, level=-1, drop_level=True)
         else:
-            # 兜底：取第一個 ticker
             first_ticker = dfx.columns.get_level_values(-1)[0]
             dfx = dfx.xs(first_ticker, axis=1, level=-1, drop_level=True)
 
     out = dfx.reset_index()
 
-    # index 欄位可能叫 Date 或 Datetime
     if "Datetime" in out.columns:
         out = out.rename(columns={"Datetime": "timestamp"})
     elif "Date" in out.columns:
@@ -79,7 +75,7 @@ def _normalize_ohlcv(df: pd.DataFrame, symbol: str) -> pd.DataFrame:
 
     out["timestamp"] = pd.to_datetime(out["timestamp"], utc=True, errors="coerce")
 
-    # ✅ 確保每個欄位都是 Series；若因重複欄名變 DataFrame，就取第一欄
+
     for c in ["open", "high", "low", "close", "volume"]:
         col = out[c]
         if isinstance(col, pd.DataFrame):

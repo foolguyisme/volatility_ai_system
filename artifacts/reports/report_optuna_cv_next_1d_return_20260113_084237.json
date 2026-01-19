@@ -1,0 +1,38 @@
+{
+  "target": "next_1d_return",
+  "n_trials": 50,
+  "best_value_rmse_mean": 0.024383510192125625,
+  "best_params": {
+    "learning_rate": 0.07860548569204491,
+    "num_leaves": 17,
+    "min_child_samples": 21,
+    "subsample": 0.6038855939114581,
+    "colsample_bytree": 0.8056891692692755,
+    "reg_lambda": 0.14515619679118616,
+    "reg_alpha": 0.9912304431814063,
+    "n_estimators": 3034
+  },
+  "fixed_params": {
+    "device": "gpu",
+    "gpu_platform_id": 0,
+    "gpu_device_id": 0,
+    "max_bin": 255,
+    "min_data_in_bin": 3,
+    "min_split_gain": 0.0,
+    "verbosity": -1,
+    "random_state": 42,
+    "n_jobs": -1
+  },
+  "model_path": "artifacts/models\\lgbm_optuna_cv_next_1d_return_20260113_084237.txt",
+  "n_rows_used": 6270,
+  "n_features": 124,
+  "cv": {
+    "n_folds": 5,
+    "valid_size": 0.15,
+    "expanding": true
+  },
+  "run_id": "20260113_084237",
+  "tag": "optuna",
+  "run_type": "optuna_cv",
+  "config_path": "configs/train_optuna.yaml"
+}

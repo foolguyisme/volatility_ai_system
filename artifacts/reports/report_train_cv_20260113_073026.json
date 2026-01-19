@@ -1,0 +1,37 @@
+{
+  "run_id": "20260113_073026",
+  "results": {
+    "next_7d_return": {
+      "rmse_mean": 0.06846513852172056,
+      "rmse_std": 0.008416018155233703,
+      "fold_rmses": [
+        0.07949361730200934,
+        0.07149420424135401,
+        0.05388807002052489,
+        0.07103988928285676,
+        0.06640991176185786
+      ],
+      "model_path": "artifacts/models\\lgbm_cv_next_7d_return_20260113_073026.txt",
+      "oof_path": "artifacts/oof\\oof_cv_next_7d_return_20260113_073026.parquet"
+    }
+  },
+  "config_path": "configs/train_cv_optuna_7d.yaml",
+  "model_params_used": {
+    "device": "gpu",
+    "gpu_platform_id": 0,
+    "gpu_device_id": 0,
+    "max_bin": 255,
+    "min_data_in_bin": 3,
+    "min_split_gain": 0.0,
+    "verbosity": -1,
+    "random_state": 42,
+    "learning_rate": 0.03118071756109899,
+    "num_leaves": 47,
+    "min_child_samples": 8,
+    "subsample": 0.7165906844493942,
+    "colsample_bytree": 0.6592331606003983,
+    "reg_lambda": 0.031119790800285305,
+    "reg_alpha": 0.9493502707790766,
+    "n_estimators": 2736
+  }
+}
